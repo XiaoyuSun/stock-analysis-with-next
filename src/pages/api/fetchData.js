@@ -5,20 +5,22 @@ import { FUNCTION_TYPES } from "@/utils/constant";
 
 export default async function fetchData(req, res) {
   const { query } = req;
-  const { symbol, functionType } = query;
+  const { symbol, functionType, cachedMode } = query;
 
-  if (functionType === FUNCTION_TYPES.SYMBOL_SEARCH) {
-    return res
-      .status(200)
-      .json(symbols.bestMatches.map((match) => match["1. symbol"]));
-  }
+  if (cachedMode === "true") {
+    if (functionType === FUNCTION_TYPES.SYMBOL_SEARCH) {
+      return res
+        .status(200)
+        .json(symbols.bestMatches.map((match) => match["1. symbol"]));
+    }
 
-  if (functionType === FUNCTION_TYPES.BALANCE_SHEET) {
-    return res.status(200).json(balanceData);
-  }
+    if (functionType === FUNCTION_TYPES.BALANCE_SHEET) {
+      return res.status(200).json(balanceData);
+    }
 
-  if (functionType === FUNCTION_TYPES.INCOME_STATEMENT) {
-    return res.status(200).json(incomeData);
+    if (functionType === FUNCTION_TYPES.INCOME_STATEMENT) {
+      return res.status(200).json(incomeData);
+    }
   }
 
   const apiKey = process.env.ALPHA_VANTAGE_API_KEY;

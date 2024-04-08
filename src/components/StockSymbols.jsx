@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useReducer } from "react";
 import StockChart from "./StockChart";
 import { FUNCTION_TYPES } from "@/utils/constant";
+import CheckBox from "./CheckBox";
 
 const StockSymbols = () => {
   const [inputText, setInputText] = useState("");
@@ -12,6 +13,7 @@ const StockSymbols = () => {
   const [incomeData, setIncomeData] = useState(null);
   const [message, setMessage] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [cachedMode, setCachedMode] = useState(true);
 
   const handleInputChange = (e) => {
     let value = e.target.value;
@@ -29,7 +31,7 @@ const StockSymbols = () => {
     const fetchStockSymbols = async () => {
       if (inputText) {
         const response = await fetch(
-          `/api/fetchData?functionType=${FUNCTION_TYPES.SYMBOL_SEARCH}&symbol=${inputText}`
+          `/api/fetchData?functionType=${FUNCTION_TYPES.SYMBOL_SEARCH}&symbol=${inputText}&cachedMode=${cachedMode}`
         );
         if (response.status === 429 || response.status === 500) {
           setMessage(response.statusText);
@@ -41,13 +43,13 @@ const StockSymbols = () => {
     };
 
     fetchStockSymbols();
-  }, [inputText]);
+  }, [inputText, cachedMode]);
 
   useEffect(() => {
     const fetchBalanceSheetData = async () => {
       if (selectedStockSymbol) {
         const response = await fetch(
-          `/api/fetchData?functionType=${FUNCTION_TYPES.BALANCE_SHEET}&symbol=${selectedStockSymbol}`
+          `/api/fetchData?functionType=${FUNCTION_TYPES.BALANCE_SHEET}&symbol=${selectedStockSymbol}&cachedMode=${cachedMode}`
         );
         if (response.status === 429 || response.status === 500) {
           setMessage(response.statusText);
@@ -61,7 +63,7 @@ const StockSymbols = () => {
     const fetchIncomeData = async () => {
       if (selectedStockSymbol) {
         const response = await fetch(
-          `/api/fetchData?functionType=${FUNCTION_TYPES.INCOME_STATEMENT}&symbol=${selectedStockSymbol}`
+          `/api/fetchData?functionType=${FUNCTION_TYPES.INCOME_STATEMENT}&symbol=${selectedStockSymbol}&cachedMode=${cachedMode}`
         );
         if (response.status === 429 || response.status === 500) {
           setMessage(response.statusText);
@@ -74,38 +76,49 @@ const StockSymbols = () => {
 
     fetchBalanceSheetData();
     fetchIncomeData();
-  }, [selectedStockSymbol]);
+  }, [selectedStockSymbol, cachedMode]);
 
   return (
-    <div className="w-full flex flex-col flex-grow items-center relative dark:text-gray-500 ">
-      <input
-        type="text"
-        value={inputText}
-        onChange={(e) => handleInputChange(e)}
-        placeholder="Type a stock symbol..."
-        className="w-1/3 sm:w-1/3 px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-      />
-      {showDropdown && stockSymbols.length > 0 && (
-        <ul
-          className=" w-1/3 mt-1 bg-white border rounded-md shadow-md absolute z-10 top-10"
-          onMouseLeave={() => setShowDropdown(false)}
-        >
-          {stockSymbols.map((symbol) => (
-            <li
-              key={symbol}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-              onClick={() => handleSelectSuggestion(symbol)}
-            >
-              {symbol}
-            </li>
-          ))}
-        </ul>
-      )}
+    <section className="w-full flex flex-col flex-grow items-center relative dark:text-gray-500 ">
+      <section className="w-1/3 flex gap-3 justify-center items-center relative">
+        <input
+          type="text"
+          value={inputText}
+          onChange={(e) => handleInputChange(e)}
+          placeholder="Type a stock symbol..."
+          className="w-full px-4 py-2 border-2 border-gray-400 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300 relative"
+        />
+
+        {showDropdown && stockSymbols.length > 0 && (
+          <ul
+            className="absolute bg-white border-2 border-gray-400 rounded-lg shadow-md mt-2 z-10 top-10 w-full"
+            onMouseLeave={() => setShowDropdown(false)}
+          >
+            {stockSymbols.map((symbol) => (
+              <li
+                key={symbol}
+                className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                onClick={() => handleSelectSuggestion(symbol)}
+              >
+                {symbol}
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="absolute top-0 right-0 flex items-center h-full mr-1">
+          <CheckBox
+            onClick={() => setCachedMode(!cachedMode)}
+            checked={cachedMode}
+          />
+        </div>
+      </section>
+
       {balanceData && incomeData && (
         <StockChart balanceData={balanceData} incomeData={incomeData} />
       )}
+
       {message}
-    </div>
+    </section>
   );
 };
 
