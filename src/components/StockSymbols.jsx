@@ -77,7 +77,7 @@ const StockSymbols = () => {
   }, [selectedStockSymbol]);
 
   return (
-    <div className="border border-red-400 w-full flex flex-col flex-grow items-center relative dark:text-gray-500 ">
+    <div className="w-full flex flex-col flex-grow items-center relative dark:text-gray-500 ">
       <input
         type="text"
         value={inputText}
