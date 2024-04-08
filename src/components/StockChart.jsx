@@ -29,7 +29,7 @@ const BalancePlot = ({ balanceData, incomeData }) => {
   );
 
   return (
-    <section className="flex flex-1 w-full">
+    <section className="flex w-2/3">
       <LineChart stockData={stockData} />
     </section>
   );
