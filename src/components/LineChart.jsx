@@ -17,9 +17,6 @@ const LineChart = ({ stockData }) => {
   const netIncomeData = arr.map((data) => data.netIncome);
   const totalRevenueData = arr.map((data) => data.totalRevenue);
 
-  // console.log(labels);
-  // console.log(totalShareholderEquityData);
-
   const chartData = {
     labels: labels,
     datasets: [
@@ -62,7 +59,7 @@ const LineChart = ({ stockData }) => {
 
   return (
     <section className="w-full">
-      <Chart type="line" data={chartData} options={options} />;
+      <Chart type="line" data={chartData} options={options} />
     </section>
   );
 };

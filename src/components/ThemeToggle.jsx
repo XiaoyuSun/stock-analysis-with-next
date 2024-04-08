@@ -5,15 +5,21 @@ import { FaMoon } from "react-icons/fa";
 import { BsSunFill } from "react-icons/bs";
 
 const ThemeToggle = () => {
-  const [darkMode, setDarkMode] = useState(window.localStorage.getItem("darkMode") === "true");
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (localStorage?.getItem("theme") === "dark") {
+      setDarkMode(true)
+    }
+  }, []);
 
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
-      window.localStorage.setItem("darkMode", "true");
+      localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
-      window.localStorage.setItem("darkMode", "false");
+      localStorage.setItem("theme", "light");
     }
   }, [darkMode]);
 
