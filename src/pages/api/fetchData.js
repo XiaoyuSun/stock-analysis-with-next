@@ -22,8 +22,9 @@ export default async function fetchData(req, res) {
   }
 
   const apiKey = process.env.ALPHA_VANTAGE_API_KEY;
+  let key = functionType === FUNCTION_TYPES.SYMBOL_SEARCH ? 'keywords' : "symbol";
 
-  const url = `https://www.alphavantage.co/query?function=${functionType}&keywords=${symbol}&apikey=${apiKey}`;
+  const url = `https://www.alphavantage.co/query?function=${functionType}&${key}=${symbol}&apikey=${apiKey}`;
 
   try {
     const response = await fetch(url);
