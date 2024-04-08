@@ -67,7 +67,7 @@ const StockSymbols = () => {
           setMessage(response.statusText);
         } else {
           const data = await response.json();
-          console.log("fetchBalanceSheetData", data);
+          console.log("fetchBalanceSheetData", data, response.statusText);
           setBalanceData(data);
         }
       }
@@ -82,7 +82,7 @@ const StockSymbols = () => {
           setMessage(response.statusText);
         } else {
           const data = await response.json();
-          console.log("fetchIncomeData", data);
+          console.log("fetchIncomeData", data, response.statusText);
 
           setIncomeData(data);
         }
