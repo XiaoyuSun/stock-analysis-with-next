@@ -1,9 +1,13 @@
+import NavBar from "@/components/NavBar";
 import StockSymbols from "@/components/StockSymbols";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center">
-      <div>Stock Analysis</div>
+    <main className="min-h-screen bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-50 flex flex-col items-center p-10 gap-4">
+      <NavBar />
+      <h1 className="text-4xl font-bold text-center uppercase w-full">
+        stock Analysis
+      </h1>
       <StockSymbols />
     </main>
   );

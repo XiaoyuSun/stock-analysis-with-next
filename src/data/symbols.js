@@ -1,4 +1,4 @@
-const fakeData = {
+const symbols = {
   bestMatches: [
     {
       "1. symbol": "TSCO.LON",
@@ -58,35 +58,4 @@ const fakeData = {
   ],
 };
 
-export default async function fetchStockSymbols(req, res) {
-  const { query } = req;
-  const { symbol } = query;
-
-  const apiKey = process.env.ALPHA_VANTAGE_API_KEY;
-
-  const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${symbol}&apikey=${apiKey}`;
-
-  try {
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      // throw new Error("Failed to fetch stock symbols");
-      return res.status(500).json({ message: "Failed to fetch stock symbols" });
-    }
-
-    const data = await response.json();
-
-    if (data?.bestMatches || fakeData) {
-      let finalData = data?.bestMatches || fakeData;
-
-      return res
-        .status(200)
-        .json(finalData.bestMatches.map((match) => match["1. symbol"]));
-    }
-
-    return res.status(429).json({ message: data?.message?.Information });
-  } catch (error) {
-    console.error("Error fetching stock symbols:", error);
-    return [];
-  }
-}
+export default symbols;
