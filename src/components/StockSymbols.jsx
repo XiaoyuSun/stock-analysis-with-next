@@ -4,6 +4,7 @@ import React, { useState, useEffect, useReducer } from "react";
 import StockChart from "./StockChart";
 import { FUNCTION_TYPES } from "@/utils/constant";
 import CheckBox from "./CheckBox";
+import ErrorMessage from "./ErrorMessage";
 
 const StockSymbols = () => {
   const [inputText, setInputText] = useState("");
@@ -11,9 +12,19 @@ const StockSymbols = () => {
   const [selectedStockSymbol, setSelectedStockSymbol] = useState(null);
   const [balanceData, setBalanceData] = useState(null);
   const [incomeData, setIncomeData] = useState(null);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [cachedMode, setCachedMode] = useState(true);
+  const [cachedMode, setCachedMode] = useState(false);
+
+  const handleCachedModeChange = () => {
+    setCachedMode(!cachedMode);
+    setBalanceData(null);
+    setIncomeData(null);
+    setStockSymbols([]);
+    setInputText("");
+    setSelectedStockSymbol(null);
+    setMessage(null);
+  };
 
   const handleInputChange = (e) => {
     let value = e.target.value;
@@ -34,10 +45,11 @@ const StockSymbols = () => {
           `/api/fetchData?functionType=${FUNCTION_TYPES.SYMBOL_SEARCH}&symbol=${inputText}&cachedMode=${cachedMode}`
         );
         if (response.status === 429 || response.status === 500) {
+          console.log(response);
           setMessage(response.statusText);
         } else {
           const data = await response.json();
-          setStockSymbols(data);
+          setStockSymbols(data.bestMatches.map((match) => match["1. symbol"]));
         }
       }
     };
@@ -106,10 +118,7 @@ const StockSymbols = () => {
           </ul>
         )}
         <div className="absolute top-0 right-0 flex items-center h-full mr-1">
-          <CheckBox
-            onClick={() => setCachedMode(!cachedMode)}
-            checked={cachedMode}
-          />
+          <CheckBox onClick={handleCachedModeChange} checked={cachedMode} />
         </div>
       </section>
 
@@ -117,7 +126,7 @@ const StockSymbols = () => {
         <StockChart balanceData={balanceData} incomeData={incomeData} />
       )}
 
-      {message}
+      <ErrorMessage message={message} />
     </section>
   );
 };

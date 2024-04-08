@@ -9,9 +9,7 @@ export default async function fetchData(req, res) {
 
   if (cachedMode === "true") {
     if (functionType === FUNCTION_TYPES.SYMBOL_SEARCH) {
-      return res
-        .status(200)
-        .json(symbols.bestMatches.map((match) => match["1. symbol"]));
+      return res.status(200).json(symbols);
     }
 
     if (functionType === FUNCTION_TYPES.BALANCE_SHEET) {
@@ -36,15 +34,12 @@ export default async function fetchData(req, res) {
 
     const data = await response.json();
 
-    if (data?.bestMatches) {
-      return res
-        .status(200)
-        .json(data.bestMatches.map((match) => match["1. symbol"]));
+    if (data?.Information) {
+      return res.status(429).json({ message: data?.Information });
     }
 
-    return res.status(429).json({ message: data?.message?.Information });
+    return res.status(200).json(data);
   } catch (error) {
-    console.error("Error fetching stock symbols:", error);
-    return [];
+    return res.status(500).json({ message: "Failed to fetch stock symbols" });
   }
 }
