@@ -67,8 +67,11 @@ const StockSymbols = () => {
           setMessage(response.statusText);
         } else {
           const data = await response.json();
-          console.log("fetchBalanceSheetData", data, response.status);
-          setBalanceData(data);
+          if (data && data?.quarterlyReports) {
+            setBalanceData(data);
+          } else {
+            setMessage("No data found");
+          }
         }
       }
     };
@@ -82,9 +85,14 @@ const StockSymbols = () => {
           setMessage(response.statusText);
         } else {
           const data = await response.json();
+
           console.log("fetchIncomeData", data, response.statusText);
 
-          setIncomeData(data);
+          if (data && data?.quarterlyReports) {
+            setIncomeData(data);
+          } else {
+            setMessage("No data found");
+          }
         }
       }
     };
