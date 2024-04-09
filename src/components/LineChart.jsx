@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { chart as chartjs } from "chart.js/auto";
 import { Chart } from "react-chartjs-2";
 import MonthYearSelector from "./MonthYearSelector";
+import { useDarkMode } from "./DarkModeContext";
 
 function isLater(dateStr1, dateStr2) {
   const date1 = new Date(dateStr1);
@@ -16,9 +17,10 @@ function isEarly(dateStr1, dateStr2) {
 }
 
 const LineChart = ({ stockData }) => {
-  const [arr, setArr] = useState([]);
-  const [startYear, setStartYear] = useState('2010');
-  const [endYear, setEndYear] = useState('2024');
+  const [showData, setArr] = useState([]);
+  const [startYear, setStartYear] = useState("2010");
+  const [endYear, setEndYear] = useState("2024");
+  const [darkMode, toggleDarkMode] = useDarkMode();
 
   useEffect(() => {
     let tmp = [];
@@ -34,13 +36,13 @@ const LineChart = ({ stockData }) => {
     setArr(tmp);
   }, [stockData, startYear, endYear]);
 
-  const labels = arr.map((data) => data.label);
-  const totalShareholderEquityData = arr.map(
+  const labels = showData.map((data) => data.label);
+  const totalShareholderEquityData = showData.map(
     (data) => data.totalShareholderEquity
   );
 
-  const netIncomeData = arr.map((data) => data.netIncome);
-  const totalRevenueData = arr.map((data) => data.totalRevenue);
+  const netIncomeData = showData.map((data) => data.netIncome);
+  const totalRevenueData = showData.map((data) => data.totalRevenue);
 
   const chartData = {
     labels: labels,
@@ -75,18 +77,32 @@ const LineChart = ({ stockData }) => {
     scales: {
       x: {
         type: "category",
+        ticks: {
+          color: darkMode ? "white" : "black",
+        },
       },
       y: {
         beginAtZero: true,
+        ticks: {
+          color: darkMode ? "white" : "black",
+        },
       },
     },
   };
 
   return (
-    <section className="w-full flex flex-col gap-2 items-center">
+    <section className="w-full flex flex-col gap-2 items-center dark:text-gray-50">
       <div className="flex w-full gap-6">
-        <MonthYearSelector handleChange={setStartYear} label="Start" defaultValue={startYear} />
-        <MonthYearSelector handleChange={setEndYear} label="End" defaultValue={endYear} />
+        <MonthYearSelector
+          handleChange={setStartYear}
+          label="Start"
+          defaultValue={startYear}
+        />
+        <MonthYearSelector
+          handleChange={setEndYear}
+          label="End"
+          defaultValue={endYear}
+        />
       </div>
       <Chart type="line" data={chartData} options={options} />
     </section>

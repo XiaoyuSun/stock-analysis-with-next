@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// import { useDarkMode } from "./DarkModeContext";
 
 const MonthYearSelector = ({
   handleChange,
@@ -6,6 +7,7 @@ const MonthYearSelector = ({
   defaultValue,
 }) => {
   const [selectedYear, setSelectedYear] = useState("");
+  // const [darkMode, toggleDarkMode] = useDarkMode();
 
   const startYear = 2008;
   const endYear = 2024;
@@ -21,9 +23,9 @@ const MonthYearSelector = ({
   };
 
   return (
-    <div className="flex gap-4 w-full justify-center items-center my-4">
+    <div className="flex gap-4 w-full justify-center items-center my-4 text-gray-800 dark:text-gray-50">
       <select
-        className="bg-white border border-gray-400 h-10 px-4 rounded-md"
+        className="bg-white border border-gray-400 h-10 px-4 rounded-md text-gray-900"
         value={selectedYear}
         onChange={handleYearChange}
       >
@@ -35,7 +37,7 @@ const MonthYearSelector = ({
         ))}
       </select>
 
-      <p className="text-gray-800">
+      <p>
         {label} Year: <strong>{selectedYear || defaultValue}</strong>
       </p>
     </div>
