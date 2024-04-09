@@ -133,7 +133,7 @@ const StockSymbols = () => {
         </div>
       </section>
 
-      {balanceData && incomeData && (
+      { message === null && balanceData && incomeData && (
         <StockChart balanceData={balanceData} incomeData={incomeData} />
       )}
 
