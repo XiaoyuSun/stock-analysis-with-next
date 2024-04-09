@@ -29,11 +29,13 @@ const StockSymbols = () => {
   const handleInputChange = (e) => {
     let value = e.target.value;
     setInputText(value);
+    setMessage(null);
     setShowDropdown(value.length > 0);
   };
 
   const handleSelectSuggestion = (selectedSuggestion) => {
     setInputText(selectedSuggestion);
+    setMessage(null);
     setSelectedStockSymbol(selectedSuggestion);
     setShowDropdown(false);
   };
