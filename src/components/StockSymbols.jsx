@@ -50,7 +50,7 @@ const StockSymbols = () => {
         );
         if (response.status === 429 || response.status === 500) {
           console.log(response);
-          setMessage(response.statusText);
+          setMessage(response.statusText || "Something went wrong");
         } else {
           const data = await response.json();
           setStockSymbols(data.bestMatches.map((match) => match["1. symbol"]));
@@ -135,7 +135,7 @@ const StockSymbols = () => {
         </div>
       </section>
 
-      { message === null && balanceData && incomeData && (
+      {message === null && balanceData && incomeData && (
         <StockChart balanceData={balanceData} incomeData={incomeData} />
       )}
 
