@@ -73,7 +73,11 @@ const StockSymbols = () => {
           `/api/fetchData?functionType=${FUNCTION_TYPES.BALANCE_SHEET}&symbol=${selectedStockSymbol}&demoMode=${demoMode}`
         );
         if (response.status === 429 || response.status === 500) {
-          setMessage(response.statusText);
+          setMessage(
+            response.status === 429
+              ? "Too many requests"
+              : "Something went wrong"
+          );
         } else {
           const data = await response.json();
           if (data && data?.quarterlyReports) {
@@ -91,7 +95,11 @@ const StockSymbols = () => {
           `/api/fetchData?functionType=${FUNCTION_TYPES.INCOME_STATEMENT}&symbol=${selectedStockSymbol}&demoMode=${demoMode}`
         );
         if (response.status === 429 || response.status === 500) {
-          setMessage(response.statusText);
+          setMessage(
+            response.status === 429
+              ? "Too many requests"
+              : "Something went wrong"
+          );
         } else {
           const data = await response.json();
 
