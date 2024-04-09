@@ -5,12 +5,12 @@ function CheckBox({ onClick, checked }) {
     <div>
       <input
         type="checkbox"
-        id="cachedMode"
+        id="demoMode"
         className="hidden"
         onChange={onClick}
         checked={checked}
       />
-      <label htmlFor="cachedMode" className="flex items-center cursor-pointer">
+      <label htmlFor="demoMode" className="flex items-center cursor-pointer">
         <div className="w-6 h-6 border border-gray-400 rounded-md flex items-center justify-center mr-2">
           <svg
             className={`w-4 h-4 ${
@@ -26,7 +26,7 @@ function CheckBox({ onClick, checked }) {
             <path d="M20 6L9 17l-5-5" />
           </svg>
         </div>
-        <span className="text-sm">Cached Mode</span>
+        <span className="text-sm">Demo Mode</span>
       </label>
     </div>
   );
