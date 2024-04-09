@@ -30,6 +30,8 @@ const StockSymbols = () => {
     let value = e.target.value;
     setInputText(value);
     setMessage(null);
+    setBalanceData(null);
+    setIncomeData(null);
     setShowDropdown(value.length > 0);
   };
 
