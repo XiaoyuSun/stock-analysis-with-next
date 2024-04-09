@@ -9,6 +9,8 @@ const LineChart = ({ stockData }) => {
     arr.push({ label: key, ...stockData[key] });
   });
 
+  arr.sort((a, b) => new Date(a.label) - new Date(b.label));
+
   const labels = arr.map((data) => data.label);
   const totalShareholderEquityData = arr.map(
     (data) => data.totalShareholderEquity
