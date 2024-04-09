@@ -50,7 +50,12 @@ const StockSymbols = () => {
         );
         if (response.status === 429 || response.status === 500) {
           console.log(response);
-          setMessage(response.statusText || "Something went wrong");
+          setMessage(
+            response.status === 429
+              ? "Too many requests"
+              : "Something went wrong"
+          );
+          setStockSymbols([]);
         } else {
           const data = await response.json();
           setStockSymbols(data.bestMatches.map((match) => match["1. symbol"]));
