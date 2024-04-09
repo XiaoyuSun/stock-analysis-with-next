@@ -101,7 +101,7 @@ const StockSymbols = () => {
 
   return (
     <section className="w-full flex flex-col flex-grow items-center relative dark:text-gray-500 ">
-      <section className="w-1/3 flex gap-3 justify-center items-center relative">
+      <section className="w-4/5 md:w-2/3 lg:w-1/3 flex gap-3 justify-center items-center relative">
         <input
           type="text"
           value={inputText}

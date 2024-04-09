@@ -2,7 +2,7 @@ import React from "react";
 
 function CheckBox({ onClick, checked }) {
   return (
-    <div>
+    <div className="hidden sm:block">
       <input
         type="checkbox"
         id="demoMode"
