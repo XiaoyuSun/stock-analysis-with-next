@@ -1,15 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { chart as chartjs } from "chart.js/auto";
 import { Chart } from "react-chartjs-2";
+import MonthYearSelector from "./MonthYearSelector";
+
+function isLater(dateStr1, dateStr2) {
+  const date1 = new Date(dateStr1);
+  const date2 = new Date(dateStr2);
+  return date1 > date2;
+}
+
+function isEarly(dateStr1, dateStr2) {
+  const date1 = new Date(dateStr1);
+  const date2 = new Date(dateStr2);
+  return date1 < date2;
+}
 
 const LineChart = ({ stockData }) => {
-  let arr = [];
+  const [arr, setArr] = useState([]);
+  const [startYear, setStartYear] = useState('2010');
+  const [endYear, setEndYear] = useState('2024');
 
-  Object.keys(stockData).forEach((key) => {
-    arr.push({ label: key, ...stockData[key] });
-  });
+  useEffect(() => {
+    let tmp = [];
 
-  arr.sort((a, b) => new Date(a.label) - new Date(b.label));
+    Object.keys(stockData)
+      .filter((key) => isLater(key, startYear) && isEarly(key, endYear))
+      .forEach((key) => {
+        tmp.push({ label: key, ...stockData[key] });
+      });
+
+    tmp.sort((a, b) => new Date(a.label) - new Date(b.label));
+
+    setArr(tmp);
+  }, [stockData, startYear, endYear]);
 
   const labels = arr.map((data) => data.label);
   const totalShareholderEquityData = arr.map(
@@ -60,7 +83,11 @@ const LineChart = ({ stockData }) => {
   };
 
   return (
-    <section className="w-full">
+    <section className="w-full flex flex-col gap-2 items-center">
+      <div className="flex w-full gap-6">
+        <MonthYearSelector handleChange={setStartYear} label="Start" defaultValue={startYear} />
+        <MonthYearSelector handleChange={setEndYear} label="End" defaultValue={endYear} />
+      </div>
       <Chart type="line" data={chartData} options={options} />
     </section>
   );
